@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <Configuration xmlns:xi="http://www.w3.org/2001/XInclude" status="WARN"> -->
+<!-- Package should be removed for 2.24.0 -->
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude" packages="com.log4j2test.appender" status="WARN">
+	<!-- Pas sure de ce truc...
+   	<Plugins>
+        <Plugin name="MapAppender" type="com.log4j2test.appender.MapAppender"/>
+    </Plugins>
+ 	-->
+    <Properties>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} --- thread_id="%tid" thread_name="%tn" thread_priority="%tp" --- [%p] %m%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="RollingName" filename="logs/app.log"
+                     filePattern="$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+        </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        
+        <MapAppender name="MapAppender" />
+        
+    </Appenders>
+    <Loggers>
+        <Logger name="LoggerDefault" level="trace">
+            <AppenderRef ref="Console"/>
+             
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingName"/>
+            <AppenderRef ref="MapAppender" />
+        </Root>
+    </Loggers>
+</Configuration>
